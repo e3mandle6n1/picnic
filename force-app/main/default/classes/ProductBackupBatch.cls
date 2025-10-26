@@ -25,7 +25,7 @@ public class ProductBackupBatch implements Database.Batchable<SObject> {
             }
 
             productBackupsToUpsert.add(new ProductBackup__c(
-                Product_External_ID__c = prod.Product_External_ID__c,
+                Product_External_ID__c = prod.Id,
                 Name = prod.Name,
                 Selling_Price__c = sellingPrice
             ));
