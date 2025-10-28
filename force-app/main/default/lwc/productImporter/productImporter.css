@@ -1,0 +1,34 @@
+.product-list-container {
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+}
+
+.product-item {
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.product-item:hover {
+    background-color: var(--lwc-colorBackgroundHighlight, #f3f3f3);
+}
+
+.product-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.detail-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+}
+
+.slds-modal__content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
