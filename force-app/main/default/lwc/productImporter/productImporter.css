@@ -1,0 +1,6 @@
+.list-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 1px solid #d8dde6;
+    border-radius: .25rem;
+}
