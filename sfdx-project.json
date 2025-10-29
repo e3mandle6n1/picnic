@@ -5,7 +5,7 @@
       "default": true
     }
   ],
-  "name": "picnic-test",
+  "name": "picnic",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "65.0"
