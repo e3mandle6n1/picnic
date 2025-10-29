@@ -1,12 +1,31 @@
 # Product Import & Backup System
 
-A comprehensive Salesforce solution for importing products from external APIs and managing automated product data backups. This system features a modern Lightning Web Component frontend and robust batch processing backend.
+A comprehensive Salesforce solution for importing products from external APIs and managing automated product data backups. This system features a modern Lightning Web Component frontend and robust backend automation for reliability and scalability.
 
 [![Salesforce Platform](https://img.shields.io/badge/Platform-Salesforce%20Winter%20'26-blue.svg?logo=salesforce&logoColor=white)](https://www.salesforce.com/platform/)
 [![Apex](https://img.shields.io/badge/Apex-v65.0-blue.svg?logo=salesforce&logoColor=white)](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/)
 [![Salesforce DX](https://img.shields.io/badge/CLI-v2.108.6-blue.svg?logo=salesforce&logoColor=white)](https://developer.salesforce.com/tools/sfdxcli)
 [![JSON](https://img.shields.io/badge/JSON-000?logo=json&logoColor=fff)](#)
 [![Node.js](https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white)](#)
+
+## 📚 Table of Contents
+
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Key Features](#-key-features)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [Configuration](#-configuration)
+- [Testing](#-testing)
+- [Data Flow](#-data-flow)
+- [API Integration](#-api-integration)
+- [Error Handling](#-error-handling)
+- [Performance Optimisation](#-performance-optimisation)
+- [Security Considerations](#-security-considerations)
+- [Maintenance](#-maintenance)
+- [Screenshots](#-screenshots)
+- [License](#-license)
+- [Support](#-support)
 
 ## 📋 Overview
 
@@ -204,7 +223,7 @@ sf apex run test --code-coverage --result-format human
 ```
 
 ### Advanced JSON Handling
-For more complex or verbose JSON payloads, this solution can benefit from the [Apex JPath](https://github.com/e3mandle6n1/apex-jpath) unlocked package - a comprehensive library for handling dynamic JSON data within the Salesforce Apex environment. This library provides powerful JSON traversal capabilities for scenarios requiring advanced data extraction and manipulation.
+For more complex or verbose JSON payloads, this solution can benefit from the [Apex JPath](https://github.com/e3mandle6n1/apex-jpath) unlocked package - a comprehensive library for handling dynamic JSON in Apex.
 
 ## 🚦 Error Handling
 
