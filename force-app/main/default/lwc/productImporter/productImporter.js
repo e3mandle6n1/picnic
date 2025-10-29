@@ -1,9 +1,9 @@
 
 /**
  * @name ProductImporter
- * @version 0.3
+ * @version 0.4
  * @author Emandleni M
- * @description Main component, fetches the list of products, handles filtering, manages selections, and controls when and how the details modal is shown. 
+ * @description Main component, fetches the list of products, handles filtering, manages selections, and controls when and how the details modal is shown. Now with detailed import/update feedback.
  */
 
 import { LightningElement, track, wire } from 'lwc';
@@ -12,23 +12,22 @@ import getProductsList from '@salesforce/apex/ProductImportController.getProduct
 import getProductDetail from '@salesforce/apex/ProductImportController.getProductDetail';
 import importProducts from '@salesforce/apex/ProductImportController.importProducts';
 
+// Debounce timer
 const DEBOUNCE_DELAY = 300;
 
 export default class ProductImporter extends LightningElement {
-    // --- Data and State Properties ---
     @track products = []; // Full product list from the API
     @track filteredProducts = []; // List displayed in the UI
     @track filterTerm = '';
-    
     @track isLoading = true;
     
     // Modal State
     @track isModalOpen = false;
     @track selectedProductDetail = {};
     @track isDetailLoading = false;
-    timerId;
+    
+    timerId; // for debouncing
 
-    // --- Data Retrieval (Wired Apex) ---
     @wire(getProductsList)
     wiredProducts({ error, data }) {
         this.isLoading = false;
@@ -38,14 +37,13 @@ export default class ProductImporter extends LightningElement {
                 ...product,
                 selected: false
             }));
-            this.filteredProducts = this.products; // Initialize filtered list
+            this.filteredProducts = this.products;
         } else if (error) {
             console.error('Error retrieving products: ', error);
             this.showToast('Error', 'Could not load products. Check Apex logs.', 'error');
         }
     }
 
-    // --- Getters for UI state ---
     get hasProducts() {
         return this.filteredProducts && this.filteredProducts.length > 0;
     }
@@ -55,7 +53,6 @@ export default class ProductImporter extends LightningElement {
         return !this.products.some(p => p.selected);
     }
 
-    // --- Filtering and Debouncing ---
     handleFilterChange(event) {
         this.filterTerm = event.target.value.toLowerCase();
         
@@ -67,8 +64,14 @@ export default class ProductImporter extends LightningElement {
                 this.applyFilter();
             }, DEBOUNCE_DELAY);
         } else {
-            // Keep the current list if less than 3 characters are typed
-            this.filteredProducts = this.products;
+            // If they delete chars to be < 3 (and not 0), show full list.
+            if (this.filterTerm.length === 0) {
+                 this.timerId = setTimeout(() => {
+                    this.applyFilter();
+                }, DEBOUNCE_DELAY);
+            } else {
+                 this.filteredProducts = this.products;
+            }
         }
     }
 
@@ -83,7 +86,6 @@ export default class ProductImporter extends LightningElement {
         );
     }
     
-    // --- Product Selection ---
     handleProductSelection(event) {
         const productId = event.target.dataset.id;
         const isChecked = event.target.checked;
@@ -99,7 +101,6 @@ export default class ProductImporter extends LightningElement {
         );
     }
     
-    // --- Import DML Operation ---
     async handleImport() {
         const selectedProducts = this.products.filter(p => p.selected);
 
@@ -113,20 +114,37 @@ export default class ProductImporter extends LightningElement {
         const jsonPayload = JSON.stringify(selectedProducts);
         
         try {
-            const importCount = await importProducts({ productsToImportJson: jsonPayload });
+            // Expect the new ImportResult wrapper object
+            const result = await importProducts({ productsToImportJson: jsonPayload });
             
-            if (importCount > 0) {
-                const message = importCount === 1
-                    ? '1 product imported successfully.'
-                    : `${importCount} products imported successfully.`;
+            const createdCount = result.createdCount;
+            const updatedCount = result.updatedCount;
+
+            // Build a dynamic, detailed success message that shows correct plurals and counts
+            let messageParts = [];
+            if (createdCount > 0) {
+                let part = `${createdCount} new product${createdCount > 1 ? 's' : ''} imported`;
+                messageParts.push(part);
+            }
+            if (updatedCount > 0) {
+                let part = `${updatedCount} existing product${updatedCount > 1 ? 's' : ''} updated`;
+                messageParts.push(part);
+            }
+
+            if (messageParts.length > 0) {
+                // This will create messages like:
+                // "5 new products imported."
+                // "3 existing products updated."
+                // "5 new products imported and 3 existing products updated."
+                const message = messageParts.join(' and ') + '.';
                 
-                this.showToast('Success', message, 'success');
+                this.showToast('Import Complete', message, 'success');
                 
                 // Clear selections after successful import
                 this.products = this.products.map(p => ({ ...p, selected: false }));
                 this.applyFilter(); // Re-render filtered list with cleared selections
             } else {
-                this.showToast('Info', 'No products were imported.', 'info');
+                this.showToast('Info', 'No products were imported or updated.', 'info');
             }
             
         } catch (error) {
@@ -143,7 +161,6 @@ export default class ProductImporter extends LightningElement {
         }
     }
 
-    // --- Modal/Lightbox Functionality ---
     async handleProductClick(event) {
         const productId = event.currentTarget.dataset.id;
         if (!productId) return;
