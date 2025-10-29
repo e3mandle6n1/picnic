@@ -1,8 +1,8 @@
 /**
  * @name ProductBackupBatch
- * @version 0.1
+ * @version 0.2
  * @author Emandleni M
- * @description A batch class for backing up product data.
+ * @description A batch class for backing up product data using the correct External ID.
  */
 public class ProductBackupBatch implements Database.Batchable<SObject> {
 
@@ -11,12 +11,12 @@ public class ProductBackupBatch implements Database.Batchable<SObject> {
     @TestVisible
     private ProductBackupBatch(String testQuery) {
         Id standardPbId = Test.getStandardPricebookId();
-        query = 'SELECT Name, (SELECT UnitPrice FROM PricebookEntries WHERE IsActive = true AND Pricebook2Id = \'' + standardPbId + '\' LIMIT 1) ' +
+        query = 'SELECT Name, External_Product_ID__c, (SELECT UnitPrice FROM PricebookEntries WHERE IsActive = true AND Pricebook2Id = \'' + standardPbId + '\' LIMIT 1) ' +
                 'FROM Product2 WHERE Id IN ' + testQuery;
     }
 
     public ProductBackupBatch() {
-        query = 'SELECT Name, (SELECT UnitPrice FROM PricebookEntries WHERE IsActive = true AND Pricebook2.IsStandard = true LIMIT 1) ' +
+        query = 'SELECT Name, External_Product_ID__c, (SELECT UnitPrice FROM PricebookEntries WHERE IsActive = true AND Pricebook2.IsStandard = true LIMIT 1) ' +
                 'FROM Product2 WHERE IsActive = true';
     }
 
@@ -34,7 +34,7 @@ public class ProductBackupBatch implements Database.Batchable<SObject> {
             }
 
             productBackupsToUpsert.add(new ProductBackup__c(
-                Product_External_ID__c = prod.Id,
+                Product_External_ID__c = prod.External_Product_ID__c,
                 Name = prod.Name,
                 Selling_Price__c = sellingPrice
             ));

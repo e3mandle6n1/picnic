@@ -1,9 +1,9 @@
 
 /**
  * @name ProductImporter
- * @version 0.2
+ * @version 0.3
  * @author Emandleni M
- * @description Main component, fetches the list of products, handles filtering, manages selections, and controls when and how the details modal is shown.
+ * @description Main component, fetches the list of products, handles filtering, manages selections, and controls when and how the details modal is shown. 
  */
 
 import { LightningElement, track, wire } from 'lwc';
@@ -12,8 +12,7 @@ import getProductsList from '@salesforce/apex/ProductImportController.getProduct
 import getProductDetail from '@salesforce/apex/ProductImportController.getProductDetail';
 import importProducts from '@salesforce/apex/ProductImportController.importProducts';
 
-// Debounce timer
-const DEBOUNCE_DELAY = 300; // milliseconds
+const DEBOUNCE_DELAY = 300;
 
 export default class ProductImporter extends LightningElement {
     // --- Data and State Properties ---
@@ -27,8 +26,7 @@ export default class ProductImporter extends LightningElement {
     @track isModalOpen = false;
     @track selectedProductDetail = {};
     @track isDetailLoading = false;
-    
-    timerId; // for debouncing
+    timerId;
 
     // --- Data Retrieval (Wired Apex) ---
     @wire(getProductsList)
@@ -112,17 +110,16 @@ export default class ProductImporter extends LightningElement {
 
         this.isLoading = true;
         
-        // 1. Convert the selected products array to a JSON string
-        // This matches the 'productsToImportJson' parameter in Apex
         const jsonPayload = JSON.stringify(selectedProducts);
         
         try {
-            // 2. Call the refactored Apex method
             const importCount = await importProducts({ productsToImportJson: jsonPayload });
             
-            // 3. Handle the new Integer response
             if (importCount > 0) {
-                const message = `Success: ${importCount} products imported.`;
+                const message = importCount === 1
+                    ? '1 product imported successfully.'
+                    : `${importCount} products imported successfully.`;
+                
                 this.showToast('Success', message, 'success');
                 
                 // Clear selections after successful import
@@ -133,11 +130,9 @@ export default class ProductImporter extends LightningElement {
             }
             
         } catch (error) {
-            // 4. The AuraHandledException message will be in error.body.message
             console.error('Error importing products: ', JSON.stringify(error));
             let errorMessage = 'An unexpected error occurred during import.';
             
-            // This is the standard way to extract the user-friendly AuraHandledException message
             if (error && error.body && error.body.message) {
                 errorMessage = error.body.message;
             }
