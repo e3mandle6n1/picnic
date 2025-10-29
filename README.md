@@ -178,8 +178,7 @@ sf apex run test --tests ProductImportControllerTest --synchronous
 sf apex run test --code-coverage --result-format human
 ```
 
-<img width="957" height="381" alt="Screenshot 2025-10-29 at 08 00 50" src="https://github.com/user-attachments/assets/b90dcce6-8537-41d9-86ae-83561d910bdb" />
-
+<img width="855" height="415" alt="Screenshot 2025-10-29 at 11 14 05" src="https://github.com/user-attachments/assets/31a59f8b-b219-4351-93eb-bc1a67be7c83" />
 
 ## 📊 Data Flow
 
