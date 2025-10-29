@@ -23,7 +23,7 @@ A comprehensive Salesforce solution for importing products from external APIs an
 - [Performance Optimisation](#-performance-optimisation)
 - [Security Considerations](#-security-considerations)
 - [Maintenance](#-maintenance)
-- [Screenshots](#-screenshots)
+- [Screenshots](#-maintenance)
 - [License](#-license)
 - [Support](#-support)
 
