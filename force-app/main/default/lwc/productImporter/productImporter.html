@@ -1,0 +1,121 @@
+<template>
+    <!-- Product Importer Card -->
+    <lightning-card title="Product Importer" icon-name="standard:product">
+        <div class="slds-p-around_medium">
+
+            <!-- Filter and Import Controls -->
+            <div class="slds-grid slds-gutters slds-wrap slds-align_center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                    <lightning-input
+                        label="Filter Products"
+                        type="search"
+                        value={filterTerm}
+                        onchange={handleFilterChange}
+                        placeholder="Type 3 or more characters to search..."
+                    ></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-align-bottom slds-p-top_large">
+                    <lightning-button
+                        label="Import Selected Products"
+                        onclick={handleImport}
+                        disabled={isImportDisabled}
+                        variant="brand"
+                        class="slds-float_right"
+                    ></lightning-button>
+                </div>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-m-vertical_x-large">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+            
+            <!-- Product List Section -->
+            <div class="product-list-container">
+                <template if:true={hasProducts}>
+                    <ul class="slds-has-dividers_around">
+                        <template for:each={filteredProducts} for:item="product">
+                            <li key={product.product_id} 
+                                data-id={product.product_id} 
+                                class="product-item slds-media slds-media_center slds-p-around_small slds-list_horizontal slds-border_bottom"
+                            >
+                                <!-- Product Selection Checkbox -->
+                                <div class="slds-media__figure">
+                                    <lightning-input
+                                        type="checkbox"
+                                        checked={product.selected}
+                                        data-id={product.product_id}
+                                        onchange={handleProductSelection}
+                                        class="slds-m-right_medium"
+                                    ></lightning-input>
+                                </div>
+                                
+                                <!-- Product Info and Click Handler -->
+                                <div class="slds-media__body slds-grow" onclick={handleProductClick} data-id={product.product_id}>
+                                    <div class="slds-grid slds-gutters slds-wrap">
+                                        <div class="slds-col slds-size_2-of-12">
+                                            <img src={product.image} alt={product.name} class="product-image" />
+                                        </div>
+                                        
+                                        <div class="slds-col slds-size_10-of-12">
+                                            <p class="slds-text-heading_small">{product.name}</p>
+                                            <p class="slds-text-body_regular slds-text-color_success">
+                                                £{product.price}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <!-- No Products Found Message -->
+                <template if:false={hasProducts}>
+                    <div class="slds-box slds-align_absolute-center">No products found.</div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+
+    <!-- Product Details Modal -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" variant="inverse" size="small"></lightning-icon>
+                    </button>
+                    <h2 class="slds-modal__title slds-hyphenate">Product Details: {selectedProductDetail.name}</h2>
+                </header>
+                
+                <!-- Modal Content -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={isDetailLoading}>
+                        <div class="slds-align_absolute-center"><lightning-spinner alternative-text="Loading details" size="small"></lightning-spinner></div>
+                    </template>
+                    <template if:false={isDetailLoading}>
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-3">
+                                <img src={selectedProductDetail.image} alt={selectedProductDetail.name} class="detail-image" />
+                            </div>
+                            <div class="slds-col slds-size_2-of-3">
+                                <p><strong>Price:</strong> £{selectedProductDetail.price}</p>
+                                <p class="slds-m-top_small"><strong>Description:</strong></p>
+                                <p>{selectedProductDetail.description}</p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
