@@ -1,6 +1,12 @@
-# Picnic Product Import & Backup System
+# Product Import & Backup System
 
 A comprehensive Salesforce solution for importing products from external APIs and managing automated product data backups. This system features a modern Lightning Web Component frontend and robust batch processing backend.
+
+[![Salesforce Platform](https://img.shields.io/badge/Platform-Salesforce%20Winter%20'26-blue.svg?logo=salesforce&logoColor=white)](https://www.salesforce.com/platform/)
+[![Apex](https://img.shields.io/badge/Apex-v64.0-blue.svg?logo=salesforce&logoColor=white)](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/)
+[![Salesforce DX](https://img.shields.io/badge/CLI-v2.108.6-blue.svg?logo=salesforce&logoColor=white)](https://developer.salesforce.com/tools/sfdxcli)
+[![JSON](https://img.shields.io/badge/JSON-000?logo=json&logoColor=fff)](#)
+[![Node.js](https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white)](#)
 
 ## 📋 Overview
 
@@ -88,7 +94,7 @@ force-app/main/default/
 
 1. **Clone and Deploy**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/e3mandle6n1/picnic.git
    sf project deploy start --source-dir force-app/
    ```
 
@@ -153,17 +159,8 @@ sf apex run test --tests ProductImportControllerTest --synchronous
 sf apex run test --code-coverage --result-format human
 ```
 
-### LWC Testing
-```bash
-# Run Jest tests
-npm run test:unit
+<img width="957" height="381" alt="Screenshot 2025-10-29 at 08 00 50" src="https://github.com/user-attachments/assets/b90dcce6-8537-41d9-86ae-83561d910bdb" />
 
-# Run with coverage
-npm run test:unit:coverage
-
-# Watch mode for development
-npm run test:unit:watch
-```
 
 ## 📊 Data Flow
 
@@ -206,6 +203,9 @@ npm run test:unit:watch
 }
 ```
 
+### Advanced JSON Handling
+For more complex or verbose JSON payloads, this solution can benefit from the [Apex JPath](https://github.com/e3mandle6n1/apex-jpath) unlocked package - a comprehensive library for handling dynamic JSON data within the Salesforce Apex environment. This library provides powerful JSON traversal capabilities for scenarios requiring advanced data extraction and manipulation.
+
 ## 🚦 Error Handling
 
 ### Frontend
@@ -220,7 +220,7 @@ npm run test:unit:watch
 - **DML Exceptions**: Database operation error recovery
 - **Batch Failures**: Individual record error isolation
 
-## 📈 Performance Optimization
+## 📈 Performance Optimisation
 
 ### Caching Strategy
 - **@AuraEnabled(cacheable=true)**: Product list caching
@@ -256,7 +256,13 @@ npm run test:unit:watch
 - **API Health Checks**: External endpoint availability monitoring
 - **Performance Review**: Query optimization and bulk limits
 
-## 🤝 Contributing
+## 🖥️ Screenshots
+
+<img width="1656" height="791" alt="Screenshot 2025-10-29 at 08 16 55" src="https://github.com/user-attachments/assets/e27fe509-b98c-4c22-aa72-dedea56f1d56" />
+
+</br>
+
+<img width="726" height="414" alt="Screenshot 2025-10-29 at 08 17 19" src="https://github.com/user-attachments/assets/32354d84-cbf0-4bad-9326-78c397137b32" />
 
 ### Development Setup
 ```bash
@@ -276,12 +282,12 @@ npm run precommit
 ### Code Standards
 - **Apex**: Salesforce naming conventions and best practices
 - **LWC**: Lightning Web Components style guide
-- **Testing**: Minimum 85% code coverage requirement
+- **Testing**: Minimum 90% code coverage 
 - **Documentation**: Comprehensive inline comments
 
 ## 📝 License
 
-This project is developed for Picnic technical assessment purposes.
+None
 
 ## 👥 Support
 
