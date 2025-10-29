@@ -277,11 +277,11 @@ For more complex or verbose JSON payloads, this solution can benefit from the [A
 
 ## 🖥️ Screenshots
 
-<img width="1656" height="791" alt="Screenshot 2025-10-29 at 08 16 55" src="https://github.com/user-attachments/assets/e27fe509-b98c-4c22-aa72-dedea56f1d56" />
+<img width="1680" height="1050" alt="Screenshot 2025-10-29 at 11 08 25" src="https://github.com/user-attachments/assets/09660a18-713c-4494-95fb-8517d95d8ff1" />
 
-</br>
 
-<img width="726" height="414" alt="Screenshot 2025-10-29 at 08 17 19" src="https://github.com/user-attachments/assets/32354d84-cbf0-4bad-9326-78c397137b32" />
+<img width="1680" height="1050" alt="Screenshot 2025-10-29 at 11 10 41" src="https://github.com/user-attachments/assets/fe29ab13-c676-4c11-b672-1051942a3422" />
+
 
 ### Development Setup
 ```bash
